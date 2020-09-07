@@ -1,12 +1,14 @@
-package com.example.runningtracker
+package com.example.runningtracker.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import androidx.room.Dao
+import com.example.runningtracker.R
 import com.example.runningtracker.database.RunDAO
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     @Inject
