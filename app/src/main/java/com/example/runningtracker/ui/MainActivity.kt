@@ -3,21 +3,31 @@ package com.example.runningtracker.ui
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.setupWithNavController
 import com.example.runningtracker.R
 import com.example.runningtracker.database.RunDAO
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    @Inject
-    lateinit var runDao: RunDAO
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        Log.d("runDao", "RUNDAO: ${runDao.hashCode()}")
+        setSupportActionBar(toolbar)
+        bottomNavigationView.setupWithNavController(fragment_nav_host.findNavController())
+
+        fragment_nav_host.findNavController().addOnDestinationChangedListener { _, destination, _ ->
+            when(destination.id) {
+                R.id.runFragment, R.id.settingsFragment, R.id.statisticsFragment ->
+                    bottomNavigationView.visibility = View.VISIBLE
+                else -> bottomNavigationView.visibility = View.GONE
+            }
+        }
     }
 }
