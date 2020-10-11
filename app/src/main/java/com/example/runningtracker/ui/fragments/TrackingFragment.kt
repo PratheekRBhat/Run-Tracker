@@ -30,7 +30,7 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking){
         }
     }
 
-    fun sendCommandToService(action: String) =
+    private fun sendCommandToService(action: String) =
         Intent(requireContext(), TrackingService::class.java).also {
             it.action = action
             requireContext().startService(it)
