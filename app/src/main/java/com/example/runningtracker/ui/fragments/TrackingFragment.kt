@@ -8,11 +8,13 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.example.runningtracker.R
+import com.example.runningtracker.other.Constants
 import com.example.runningtracker.other.Constants.ACTION_PAUSE_SERVICE
 import com.example.runningtracker.other.Constants.ACTION_START_OR_RESUME_SERVICE
 import com.example.runningtracker.other.Constants.MAP_ZOOM
 import com.example.runningtracker.other.Constants.POLYLINE_COLOR
 import com.example.runningtracker.other.Constants.POLYLINE_WIDTH
+import com.example.runningtracker.other.TrackingUtility
 import com.example.runningtracker.services.Polyline
 import com.example.runningtracker.services.Polylines
 import com.example.runningtracker.services.TrackingService
@@ -30,6 +32,8 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking){
 
     private var isTracking = false
     private var pathPoints = mutableListOf<Polyline>()
+
+    private var currentTimeInMillis = 0L
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -55,6 +59,12 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking){
             pathPoints = it
             addLatestPolyline()
             moveCameraToUser()
+        })
+
+        TrackingService.timeRunInMillis.observe(viewLifecycleOwner, Observer {
+            currentTimeInMillis = it
+            val formattedTime = TrackingUtility.getFormattedStopWatchTime(currentTimeInMillis, true)
+            tvTimer.text = formattedTime
         })
     }
 
